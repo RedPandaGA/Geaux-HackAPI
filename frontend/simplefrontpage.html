@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Geaux Hack is Awesome!!</title>
+</head>
+
+<body>
+    <div>
+        <h1> Good morning! </h1>
+        <p>Hello World!</p>
+    </div>
+    <div>
+        <p>My name is Michelle!</p>
+        <p>This is <strong>bold</strong></p>
+        <p>This is <em>italics</em></p>
+        <p> if you have a long paragraph and you dont want
+            <br>to make another paragraph tag, you do break
+        </p>
+    </div>
+    <div>
+        <ul>
+            <li>html</li>
+            <li>css</li>
+            <li>javascript</li>
+        </ul>
+        <ol>
+            <li>html</li>
+            <li>css</li>
+            <li>javascript</li>
+        </ol>
+    </div>
+    <div>
+        <img src="apple.png" width="100" />
+        <a href = "saselsu.org">SASE LSU's website!</a>
+        <!-- a comment -->
+    </div>
+    <div>
+        <form action="http://localhost:3000/submitted" method="POST">
+            <input type="text" name="first_text_field">
+            <input type="submit" value="Submit">
+        </form>
+        
+        <form action="http://localhost:3000/submitted" method="GET">
+            <input type="text" name="first_text_field">
+            <input type="submit" value="Submit">
+        </form>
+
+        <input type="text" name="query_text_field" id="queryText">
+        <input type="button" value="Translate" onclick="translateText()">
+        <p id="resText"></p>
+    </div>
+</body>
+
+<script>
+    async function translateText(){
+        var test = { textToTranslate: document.getElementById("queryText").value };
+
+        const data = JSON.stringify(test);
+        const options = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
+        };
+
+        await fetch("http://localhost:3000/query", options).then(res => res.text())
+                .then(text => {
+                    console.log(text)
+                    document.getElementById("resText").innerHTML = text;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+    };
+
+</script>
+
+</html>
