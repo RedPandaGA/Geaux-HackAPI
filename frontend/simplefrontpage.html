@@ -33,49 +33,85 @@
     <div>
         <img src="apple.png" width="100" />
         <a href = "saselsu.org">SASE LSU's website!</a>
-        <!-- a comment -->
     </div>
     <div>
-        <form action="http://localhost:3000/submitted" method="POST">
-            <input type="text" name="first_text_field">
-            <input type="submit" value="Submit">
-        </form>
-        
-        <form action="http://localhost:3000/submitted" method="GET">
+        <form action="https://api.infamousredpanda.com/submitted" method="POST">
             <input type="text" name="first_text_field">
             <input type="submit" value="Submit">
         </form>
 
-        <input type="text" name="query_text_field" id="queryText">
+        <form action="https://api.infamousredpanda.com/submitted" method="GET">
+            <input type="text" name="first_text_field">
+            <input type="submit" value="Submit">
+        </form>
+
+        <form action="https://api.infamousredpanda.com/redirect" method="GET">
+            <input type="submit" value="Redirect">
+        </form>
+
+        <input type="button" value="See Supported" onclick="getsuplang()"><br>
+
+        <textarea type="text" name="query_text_field" id="queryText"></textarea>
+        <select name="translang" id="translang"></select>
         <input type="button" value="Translate" onclick="translateText()">
         <p id="resText"></p>
     </div>
 </body>
 
 <script>
-    async function translateText(){
-        var test = { textToTranslate: document.getElementById("queryText").value };
+    // Simple JS GET API call; no api key necessary
+    //console.log(res) then res.json(); Explain how promises work.
+    function getsuplang(){
+        fetch("https://api.infamousredpanda.com/possibletranslations").then(res => console.log(res))
+            .then(sup => {
+                console.log(sup)
+                // document.getElementById("resText").innerHTML = sup[0];
+                document.getElementById("resText").innerHTML = sup.toString();
+            })
+    }
 
-        const data = JSON.stringify(test);
+    // Actually modifies the site and provides function
+    // function getsuplang(){
+    //     fetch("https://api.infamousredpanda.com/possibletranslations").then(res => res.json())
+    //         .then(sup => {
+    //             console.log(sup)
+    //             sup.forEach((langop) => {
+    //                 console.log(langop);
+    //                 let option = new Option();
+    //                 option.innerHTML = langop;
+    //                 option.value = langop;
+    //                 document.getElementById("translang").append(option);
+    //             })   
+    //         })
+    // }
+
+    //JS POST API request
+    function translateText(){
+
         const options = {
             method: 'POST',
             mode: 'cors',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
+                'coolapikey': 'Geaux-Hack' //KEEP THIS PRIVATE (DO NOT UPLOAD TO PUBLIC GITHUB) : Geaux-Hack
             },
-            body: data
+            body: JSON.stringify({ textToTranslate: document.getElementById("queryText").value })
         };
 
-        await fetch("http://localhost:3000/query", options).then(res => res.text())
+        //Dynamic assignment: ${document.getElementById('translang').value}
+        fetch(`https://api.infamousredpanda.com/translate/es`, options).then(res => res.json())
                 .then(text => {
-                    console.log(text)
-                    document.getElementById("resText").innerHTML = text;
+                    if(text.error != undefined){
+                        document.getElementById("resText").innerHTML = text.error;
+                    } else {
+                        console.log(text)
+                        document.getElementById("resText").innerHTML = text.translatedText;
+                    }
                 })
                 .catch(error => {
                     console.log(error);
                 })
     };
-
 </script>
 
 </html>
