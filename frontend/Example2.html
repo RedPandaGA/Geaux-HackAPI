@@ -26,6 +26,7 @@
 </body>
 
 <script>
+    //This function gets the languages supported by our api and then populates the above select tag with all the options
     function getsuplang(){
         fetch("https://api.infamousredpanda.com/possibletranslations").then(res => res.json())
             .then(sup => {
@@ -45,6 +46,8 @@
             })
     }
 
+    /*This functions takes the text typed into the above textbox and sends it to the api for translating into the language
+    selected from the select tag above and then updates the paragraph with the returned translation*/
     function translateText(){
         const options = {
             method: 'POST',
