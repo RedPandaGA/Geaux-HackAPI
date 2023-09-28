@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<header>
+
+</header>
+
+<body>
+
+<p>HELLO WORLD</p>
+
+<form action="https://api.infamousredpanda.com/submitted" method="GET">
+    <input type="text" name="first_text_field">
+    <input type="submit" value="GET">
+</form>
+
+<form action="https://api.infamousredpanda.com/submitted" method="POST">
+    <input type="text" name="first_text_field">
+    <input type="submit" value="POST">
+</form>
+
+<input type="button" value="See Supported" onclick="getsuplang()">
+<textarea type="text" name="query_text_field" id="queryText"></textarea>
+<select name="translang" id="translang"></select>
+<input type="button" value="Translate" onclick="translateText()">
+<p id="resText"></p>
+</body>
+
+<script>
+    function getsuplang(){
+        fetch("https://api.infamousredpanda.com/possibletranslations").then(res => res.json())
+            .then(sup => {
+                console.log(sup);
+                sup.forEach((langop) => {
+                    console.log(langop);
+                    let option = new Option();
+                    option.innerHTML = langop;
+                    option.value = langop;
+                    document.getElementById("translang").append(option);
+                })
+
+
+
+
+                document.getElementById("resText").innerHTML = sup.toString();
+            })
+    }
+
+    function translateText(){
+        const options = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'coolapikey': 'Geaux-Hack',
+                'Content-Type': 'application/json'
+                
+            },
+            body: JSON.stringify({ textToTranslate: document.getElementById("queryText").value})
+        }
+
+        fetch(`https://api.infamousredpanda.com/translate/${document.getElementById("translang").value}`, options).then(res => res.json())
+            .then(text => {
+                console.log(text);
+                document.getElementById("resText").innerHTML = text.translatedText;
+            })
+    }
+
+</script>
+</html>

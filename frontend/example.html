@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+<body>
+        <h1>HELLO WORLD</h1>
+        <form action="https://api.infamousredpanda.com/submitted" method="GET">
+            <input type="text" name="first_text_field">
+            <input type="submit" value="sned">
+        </form>
+
+        <form action="https://api.infamousredpanda.com/submitted" method="POST">
+            <input type="text" name="first_text_field">
+            <input type="submit" value="sned">
+        </form>
+
+        <form action="https://api.infamousredpanda.com/redirect" method="GET">
+            <input type="submit" value="Redirect">
+        </form>
+
+        <input type="button" value="See Supported" onclick="getsuplang()">
+        <textarea type="text" name="query_text_field" id="queryText"></textarea>
+        <input type="button" value="Translate" onclick="translateText()">
+        <p id="resText"></p>
+</body>
+
+<script>
+    function getsuplang(){
+        fetch("https://api.infamousredpanda.com/possibletranslations").then(res => res.json())
+            .then(sup => {
+                console.log(sup);
+                document.getElementById("resText").innerHTML = sup.toString();
+            })
+    }
+
+    
+    function translateText(){
+
+        //Did not work last time due to me mistyping headers without the s which led to the request not actually adding the api key.
+        const options = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+                'coolapikey': 'Geaux-Hack'
+            },
+            body: JSON.stringify( { textToTranslate: document.getElementById("queryText").value } )
+        }
+
+        fetch(`https://api.infamousredpanda.com/translate/es`, options).then(res => res.json())
+            .then(text => {
+                console.log(text)
+            })
+    }
+</script>
+</html>
